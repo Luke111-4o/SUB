@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Desing.css" />
+    <link rel="icon" href="Logo.png" />
+    <title>Boletim - SUB</title>
+  </head>
+  <body>
+    <script>
+      (function () {
+        try {
+          const isAuthed = localStorage.getItem("sub_authed") === "true";
+          if (!isAuthed) {
+            window.location.replace("../Login.html");
+          }
+        } catch (e) {}
+      })();
+
+      // Determine user role
+      const userEmail = localStorage.getItem("user_email") || "";
+      let userRole = "student"; // default
+      if (userEmail.endsWith("@professor.com")) {
+        userRole = "professor";
+      } else if (userEmail.endsWith("@aluno.com")) {
+        userRole = "student";
+      } else {
+        // invalid domain, redirect to login
+        alert("Email inválido. Use @aluno.com ou @professor.com");
+        window.location.replace("../Login.html");
+      }
+      window.userRole = userRole;
+      // --- BLOCO DE AUTENTICAÇÃO DESATIVADO PARA DESENVOLVIMENTO ---
+      // O código abaixo foi comentado para permitir abrir o SUB.html diretamente.
+      // Para reativar o login, basta remover os comentáriosa.
+      /*
+        ... (código de autenticação e redirecionamento original aqui) ...
+        */
+      // Define um usuário padrão para teste. Mude para 'student' se quiser ver a visão do aluno.
+      window.userRole = "professor";
+    </script>
+    <header class="top-nav">
+      <div class="logo">
+        <img src="Logo.png" alt="Sub" />
+        <span>Sub</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#" id="home-link" class="active" onclick="showSection('home')"
+          >Home</a
+        >
+        <a href="#" id="boletim-link" onclick="showSection('boletim')"
+          >Boletim</a
+        >
+        <a href="#" id="plano-link" onclick="showSection('plano')">Plano</a>
+
+        <a href="#" id="provas-link" onclick="showSection('provas')">Provas</a>
+
+        <a href="#" id="sobre-link" onclick="showSection('sobre')">Sobre</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="section active">
+        <h1>Painel Principal</h1>
+        <div class="dashboard-grid">
+          <div class="dashboard-card" id="frequencia-card">
+            <h2 class="card-title">Frequência Geral</h2>
+            <div class="card-content" id="frequencia-resumo-content">
+              <!-- Conteúdo gerado por JS -->
+            </div>
+          </div>
+          <div class="dashboard-card" id="plano-aula-card">
+            <h2 class="card-title">Próxima Aula Planejada</h2>
+            <div class="card-content" id="proxima-aula-content">
+              <!-- Conteúdo gerado por JS -->
+            </div>
+          </div>
+          <div class="dashboard-card" id="horas-card">
+            <h2 class="card-title">Horas de Estudo (Bimestre)</h2>
+            <div class="card-content">
+              <div class="horas-display">
+                <span>127</span>
+                <p>horas</p>
+              </div>
+              <p class="horas-meta">Meta: 150 horas</p>
+            </div>
+          </div>
+          <div class="dashboard-card" id="agenda-card">
+            <h2 class="card-title">Agenda da Semana</h2>
+            <div class="card-content" id="agenda-content">
+              <!-- Conteúdo gerado por JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="boletim" class="section">
+        <h1>
+          Boletim
+          <button id="abrirMediasBtn" class="secondary-btn">
+            Médias da Turma
+          </button>
+          <button id="abrirFrequenciaBtn" class="secondary-btn">
+            Frequência
+          </button>
+        </h1>
+        <table class="boletim-table">
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>
+                1º Bimestre<br /><span class="subheader">Nota do Aluno</span>
+              </th>
+              <th>
+                2º Bimestre<br /><span class="subheader">Nota do Aluno</span>
+              </th>
+              <th>
+                3º Bimestre<br /><span class="subheader">Nota do Aluno</span>
+              </th>
+              <th>
+                4º Bimestre<br /><span class="subheader">Nota do Aluno</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Matemática</td>
+              <td class="grade" data-materia="Matemática" data-bim="1">7</td>
+              <td class="grade" data-materia="Matemática" data-bim="2">8</td>
+              <td class="grade" data-materia="Matemática" data-bim="3">8</td>
+              <td class="grade" data-materia="Matemática" data-bim="4">7</td>
+            </tr>
+            <tr>
+              <td>Português</td>
+              <td class="grade" data-materia="Português" data-bim="1">7</td>
+              <td class="grade" data-materia="Português" data-bim="2">7</td>
+              <td class="grade" data-materia="Português" data-bim="3">7</td>
+              <td class="grade" data-materia="Português" data-bim="4">7</td>
+            </tr>
+            <tr>
+              <td>História</td>
+              <td class="grade" data-materia="História" data-bim="1">6</td>
+              <td class="grade" data-materia="História" data-bim="2">7</td>
+              <td class="grade" data-materia="História" data-bim="3">7</td>
+              <td class="grade" data-materia="História" data-bim="4">7</td>
+            </tr>
+            <tr>
+              <td>Geografia</td>
+              <td class="grade" data-materia="Geografia" data-bim="1">9</td>
+              <td class="grade" data-materia="Geografia" data-bim="2">9</td>
+              <td class="grade" data-materia="Geografia" data-bim="3">9</td>
+              <td class="grade" data-materia="Geografia" data-bim="4">9</td>
+            </tr>
+            <tr>
+              <td>Ciências</td>
+              <td class="grade" data-materia="Ciências" data-bim="1">9</td>
+              <td class="grade" data-materia="Ciências" data-bim="2">8</td>
+              <td class="grade" data-materia="Ciências" data-bim="3">9</td>
+              <td class="grade" data-materia="Ciências" data-bim="4">9</td>
+            </tr>
+            <tr>
+              <td>Artes</td>
+              <td class="grade" data-materia="Artes" data-bim="1">9</td>
+              <td class="grade" data-materia="Artes" data-bim="2">9</td>
+              <td class="grade" data-materia="Artes" data-bim="3">9</td>
+              <td class="grade" data-materia="Artes" data-bim="4">10</td>
+            </tr>
+            <tr>
+              <td>Educação Física</td>
+              <td class="grade" data-materia="Educação Física" data-bim="1">
+                10
+              </td>
+              <td class="grade" data-materia="Educação Física" data-bim="2">
+                9
+              </td>
+              <td class="grade" data-materia="Educação Física" data-bim="3">
+                10
+              </td>
+              <td class="grade" data-materia="Educação Física" data-bim="4">
+                10
+              </td>
+            </tr>
+            <tr>
+              <td>Inglês</td>
+              <td class="grade" data-materia="Inglês" data-bim="1">8</td>
+              <td class="grade" data-materia="Inglês" data-bim="2">8</td>
+              <td class="grade" data-materia="Inglês" data-bim="3">8</td>
+              <td class="grade" data-materia="Inglês" data-bim="4">8</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div id="mediasModal" class="modal" style="display: none">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Médias da Turma</h2>
+            <button id="fecharMediasBtn" class="close-btn" aria-label="Fechar">
+              ✕
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="planos-table medias-table" id="mediasTable">
+              <thead>
+                <tr>
+                  <th>Componente</th>
+                  <th>1º Bimestre</th>
+                  <th>2º Bimestre</th>
+                  <th>3º Bimestre</th>
+                  <th>4º Bimestre</th>
+                </tr>
+              </thead>
+              <tbody id="mediasTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="frequenciaModal" class="modal" style="display: none">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Frequência</h2>
+            <button
+              id="fecharFrequenciaBtn"
+              class="close-btn"
+              aria-label="Fechar"
+            >
+              ✕
+            </button>
+          </div>
+          <div class="modal-body">
+            <div
+              style="
+                display: flex;
+                gap: 16px;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <div>
+                <canvas id="frequenciaChart" width="300" height="300"></canvas>
+              </div>
+              <div id="frequenciaLegenda"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="plano" class="section">
+        <h1>Planejamento de Aulas</h1>
+        <div class="plano-container">
+          <form id="planoForm" class="plano-form">
+            <div class="form-row">
+              <label for="dataAula">Data</label>
+              <input type="date" id="dataAula" name="dataAula" required />
+            </div>
+            <div class="form-row">
+              <label for="turma">Turma</label>
+              <input
+                type="text"
+                id="turma"
+                name="turma"
+                placeholder="Ex.: 7ºA"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <label for="componente">Componente</label>
+              <input
+                type="text"
+                id="componente"
+                name="componente"
+                placeholder="Ex.: Matemática"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <label for="objetivos">Objetivos</label>
+              <textarea
+                id="objetivos"
+                name="objetivos"
+                rows="2"
+                placeholder="Descreva os objetivos da aula"
+                required
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <label for="conteudos">Conteúdos</label>
+              <textarea
+                id="conteudos"
+                name="conteudos"
+                rows="2"
+                placeholder="Tópicos que serão trabalhados"
+                required
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <label for="atividades">Atividades</label>
+              <textarea
+                id="atividades"
+                name="atividades"
+                rows="2"
+                placeholder="Atividades previstas"
+                required
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <label for="recursos">Recursos</label>
+              <textarea
+                id="recursos"
+                name="recursos"
+                rows="2"
+                placeholder="Recursos didáticos (ex.: livro, projetor)"
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <label for="avaliacao">Avaliação</label>
+              <textarea
+                id="avaliacao"
+                name="avaliacao"
+                rows="2"
+                placeholder="Como será avaliado"
+              ></textarea>
+            </div>
+            <input type="hidden" id="editingIndex" value="" />
+            <div class="form-actions">
+              <button type="submit" id="salvarPlanoBtn">Salvar</button>
+              <button
+                type="button"
+                id="cancelarEdicaoBtn"
+                style="display: none"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+
+          <div class="planos-lista">
+            <h2>Planos Salvos</h2>
+            <div class="filtros">
+              <input
+                type="text"
+                id="filtroTexto"
+                placeholder="Filtrar por turma, componente ou conteúdo"
+              />
+              <input type="month" id="filtroMes" />
+            </div>
+            <table class="planos-table" id="planosTable">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Turma</th>
+                  <th>Componente</th>
+                  <th>Objetivos</th>
+                  <th>Conteúdos</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="planosTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="provas" class="section">
+        <div class="role-switcher">
+          <span>Visualizando como:</span>
+          <button id="switch-professor">Professor 🧑‍🏫</button>
+          <button id="switch-aluno">Aluno 🎒</button>
+        </div>
+
+        <div id="professor-view" class="role-content">
+          <h2>Painel do Professor</h2>
+          <h3>Criar Nova Prova ou Atividade</h3>
+          <form class="question-form">
+            <div class="form-group">
+              <label for="componente">Componente Curricular</label>
+              <input
+                type="text"
+                id="componente"
+                placeholder="Ex: Matemática"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="titulo-prova">Título da Prova/Atividade</label>
+              <input
+                type="text"
+                id="titulo-prova"
+                placeholder="Ex: Avaliação de Funções - 1º Bimestre"
+                required
+              />
+            </div>
+
+            <hr style="border: 1px dashed #ccc; margin: 30px 0" />
+
+            <h3>Adicionar Nova Questão (Exemplo de Múltipla Escolha)</h3>
+
+            <div class="form-group">
+              <label for="pergunta">Pergunta da Questão</label>
+              <textarea
+                id="pergunta"
+                rows="3"
+                placeholder="Digite aqui o texto da questão. Qual é o valor de x na equação 2x + 5 = 15?"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Alternativas e Resposta Correta (Selecione o Rádio)</label>
+              <div class="alternatives-grid">
+                <div class="alternative-input">
+                  <input
+                    type="radio"
+                    name="resposta-correta"
+                    id="correta-a"
+                    value="a"
+                    required
+                  />
+                  <span class="alternative-label">A)</span>
+                  <input
+                    type="text"
+                    placeholder="Alternativa A: x = 5"
+                    required
+                  />
+                </div>
+
+                <div class="alternative-input">
+                  <input
+                    type="radio"
+                    name="resposta-correta"
+                    id="correta-b"
+                    value="b"
+                  />
+                  <span class="alternative-label">B)</span>
+                  <input
+                    type="text"
+                    placeholder="Alternativa B: x = 10"
+                    required
+                  />
+                </div>
+
+                <div class="alternative-input">
+                  <input
+                    type="radio"
+                    name="resposta-correta"
+                    id="correta-c"
+                    value="c"
+                  />
+                  <span class="alternative-label">C)</span>
+                  <input
+                    type="text"
+                    placeholder="Alternativa C: x = 7.5"
+                    required
+                  />
+                </div>
+
+                <div class="alternative-input">
+                  <input
+                    type="radio"
+                    name="resposta-correta"
+                    id="correta-d"
+                    value="d"
+                  />
+                  <span class="alternative-label">D)</span>
+                  <input
+                    type="text"
+                    placeholder="Alternativa D: x = 20"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn-professor">
+              Salvar Questão e Adicionar Rascunho
+            </button>
+            <button type="submit" class="btn-professor btn-primary">
+              Finalizar e Publicar Prova
+            </button>
+          </form>
+        </div>
+
+        <div id="aluno-view" class="role-content">
+          <div class="aluno-header">
+            <h2>Provas e Atividades Pendentes</h2>
+            <button id="open-grades-modal" class="btn-professor btn-primary">
+              Notas Anteriores 📝
+            </button>
+          </div>
+
+          <p style="margin-bottom: 20px; font-size: 1.1em; color: #555">
+            Clique em "Iniciar Prova" para começar uma avaliação.
+          </p>
+
+          <ul class="provas-lista">
+            <li class="prova-item">
+              <span>**Matemática:** Prova do 3º Bimestre</span>
+              <button>Iniciar Prova</button>
+            </li>
+            <li class="prova-item">
+              <span>**Português:** Análise de Texto - Machado de Assis</span>
+              <button>Iniciar Prova</button>
+            </li>
+            <li class="prova-item">
+              <span
+                >**História:** Questionário sobre a Revolução Industrial</span
+              >
+              <button>Iniciar Prova</button>
+            </li>
+            <li class="prova-item">
+              <span>**Ciências:** Avaliação de Ecossistemas - 4º Bimestre</span>
+              <button>Iniciar Prova</button>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="sobre" class="section">
+        <h1>Sobre</h1>
+        <div class="sobre-content">
+          <h2>Sistema Único de Boletim (S.U.B.)</h2>
+          <p>
+            O S.U.B. – Sistema Único de Boletim é uma proposta de ferramenta
+            digital criada para centralizar, organizar e simplificar o acesso às
+            informações escolares dos estudantes. A ideia principal é reunir, em
+            um só ambiente, notas, frequências, comentários de professores e
+            relatórios de desempenho, permitindo maior integração entre alunos,
+            responsáveis e instituições de ensino.
+          </p>
+          <p>A sigla S.U.B. pode ser entendida como:</p>
+          <ul>
+            <li>
+              <strong>S: Sistema</strong> – plataforma tecnológica que integra
+              recursos de acompanhamento escolar.
+            </li>
+            <li>
+              <strong>U: Único</strong> – centralização em um só local, evitando
+              a dispersão de informações em múltiplos meios.
+            </li>
+            <li>
+              <strong>B: Boletim</strong> – foco principal do sistema, que é o
+              registro e apresentação do desempenho acadêmico.
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <div id="notas-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-btn-provas">&times;</span>
+        <h3>Notas Finais de Provas e Atividades</h3>
+        <p style="text-align: center; color: #777">
+          Desempenho nas últimas 4 avaliações realizadas.
+        </p>
+
+        <div style="margin-top: 20px">
+          <div class="grade-item">
+            <span>Prova de Biologia - 3º Bimestre</span>
+            <span class="grade-value">8.5</span>
+          </div>
+          <div class="grade-item">
+            <span>Avaliação Mensal de Matemática</span>
+            <span class="grade-value">9.2</span>
+          </div>
+          <div class="grade-item">
+            <span>Trabalho de História</span>
+            <span class="grade-value">6.0</span>
+          </div>
+          <div class="grade-item">
+            <span>Simulado ENEM - Parte I</span>
+            <span class="grade-value">7.8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="brasiliaClock"
+      class="clock-widget"
+      style="display: none"
+      aria-live="polite"
+    ></div>
+
+    <script>
+      function showSection(sectionId) {
+        const sections = document.querySelectorAll(".section");
+        sections.forEach((section) => {
+          section.classList.remove("active");
+        });
+        document.getElementById(sectionId).classList.add("active");
+
+        const links = document.querySelectorAll(".nav-links a");
+        links.forEach((link) => {
+          link.classList.remove("active");
+        });
+        document.getElementById(sectionId + "-link").classList.add("active");
+
+        if (sectionId === "plano") {
+          renderPlanos();
+          document.getElementById("brasiliaClock").style.display = "block";
+          // Role-based access for Plano
+          const form = document.getElementById("planoForm");
+          if (window.userRole === "student") {
+            form.style.display = "none";
+          } else {
+            form.style.display = "block";
+          }
+        }
+        if (sectionId === "boletim") {
+          normalizeBoletim();
+          aplicarCoresNotas();
+          document.getElementById("brasiliaClock").style.display = "none";
+        }
+        if (sectionId === "provas") {
+          initProvasView();
+          document.getElementById("brasiliaClock").style.display = "none";
+        }
+        if (
+          sectionId !== "plano" &&
+          sectionId !== "boletim" &&
+          sectionId !== "provas"
+        ) {
+          document.getElementById("brasiliaClock").style.display = "none";
+        }
+      }
+      function initHomeView() {
+        renderHomeFrequencia();
+        renderProximaAula();
+        renderAgenda();
+      }
+
+      function calcularMediasTurma() {
+        const materias = new Map();
+        const celdas = document.querySelectorAll(
+          ".boletim-table tbody td.grade"
+        );
+        celdas.forEach((cel) => {
+          const materia = cel.getAttribute("data-materia");
+          const bim = cel.getAttribute("data-bim");
+          const valor = parseFloat(cel.textContent.replace(",", "."));
+          if (!materia || !bim || isNaN(valor)) return;
+          if (!materias.has(materia)) {
+            materias.set(materia, { 1: [], 2: [], 3: [], 4: [] });
+          }
+          materias.get(materia)[bim].push(valor);
+        });
+
+        const resultado = [];
+        materias.forEach((bimestres, materia) => {
+          const medias = [1, 2, 3, 4].map((b) => {
+            const arr = bimestres[String(b)];
+            if (!arr || arr.length === 0) return "";
+            const soma = arr.reduce((acc, n) => acc + n, 0);
+            const media = soma / arr.length;
+            return media.toFixed(1).replace(".", ",");
+          });
+          resultado.push({ materia, medias });
+        });
+        return resultado.sort((a, b) => a.materia.localeCompare(b.materia));
+      }
+
+      function renderMediasModal() {
+        const tbody = document.getElementById("mediasTbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        const linhas = calcularMediasTurma();
+        if (linhas.length === 0) {
+          const tr = document.createElement("tr");
+          const td = document.createElement("td");
+          td.colSpan = 5;
+          td.textContent = "Sem dados para calcular as médias.";
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+          return;
+        }
+        linhas.forEach(({ materia, medias }) => {
+          const tr = document.createElement("tr");
+          const tdMateria = document.createElement("td");
+          tdMateria.textContent = materia;
+          tr.appendChild(tdMateria);
+          medias.forEach((m, idx) => {
+            const td = document.createElement("td");
+            td.classList.add("grade");
+            td.setAttribute("data-materia", materia);
+            td.setAttribute("data-bim", String(idx + 1));
+            td.textContent = m || "";
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      }
+
+      function abrirModalMedias() {
+        const modal = document.getElementById("mediasModal");
+        if (!modal) return;
+        renderMediasModal();
+        modal.style.display = "block";
+        aplicarCoresNotas();
+      }
+
+      function fecharModalMedias() {
+        const modal = document.getElementById("mediasModal");
+        if (!modal) return;
+        modal.style.display = "none";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const btnAbrir = document.getElementById("abrirMediasBtn");
+        const btnFechar = document.getElementById("fecharMediasBtn");
+        if (btnAbrir) btnAbrir.addEventListener("click", abrirModalMedias);
+        if (btnFechar) btnFechar.addEventListener("click", fecharModalMedias);
+        const modal = document.getElementById("mediasModal");
+        if (modal) {
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) fecharModalMedias();
+          });
+        }
+
+        // Mostra a Home por padrão ao carregar
+        showSection("home");
+        initHomeView();
+
+        normalizeBoletim();
+        aplicarCoresNotas();
+
+        const btnFreq = document.getElementById("abrirFrequenciaBtn");
+        const btnFreqClose = document.getElementById("fecharFrequenciaBtn");
+        if (btnFreq) btnFreq.addEventListener("click", abrirModalFrequencia);
+        if (btnFreqClose)
+          btnFreqClose.addEventListener("click", fecharModalFrequencia);
+        const freqModal = document.getElementById("frequenciaModal");
+        if (freqModal) {
+          freqModal.addEventListener("click", (e) => {
+            if (e.target === freqModal) fecharModalFrequencia();
+          });
+        }
+
+        iniciarRelogioBrasilia();
+        const planoAtivo = document
+          .getElementById("plano")
+          .classList.contains("active");
+        initProvasView(); // Inicia a lógica da seção de provas
+        document.getElementById("brasiliaClock").style.display = planoAtivo
+          ? "block"
+          : "none";
+      });
+
+      function getFrequenciaResumo() {
+        // diasCompletos: presença normal
+        // faltas: ausências
+        // atrasos: chegou atrasado
+        // saidas: saiu mais cedo
+        return {
+          diasCompletos: 18,
+          faltas: 2,
+          atrasos: 3,
+          saidas: 1,
+        };
+      }
+
+      let clockIntervalId = null;
+      function iniciarRelogioBrasilia() {
+        const clockEl = document.getElementById("brasiliaClock");
+        if (!clockEl) return;
+        const update = () => {
+          const agora = new Date();
+          const formatter = new Intl.DateTimeFormat("pt-BR", {
+            timeZone: "America/Sao_Paulo",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+          const dataFmt = new Intl.DateTimeFormat("pt-BR", {
+            timeZone: "America/Sao_Paulo",
+            weekday: "short",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+          clockEl.innerHTML =
+            "<strong>Horário de Brasília</strong><br>" +
+            dataFmt.format(agora) +
+            " · " +
+            formatter.format(agora);
+        };
+        update();
+        if (clockIntervalId) clearInterval(clockIntervalId);
+        clockIntervalId = setInterval(update, 1000);
+      }
+
+      function abrirModalFrequencia() {
+        const modal = document.getElementById("frequenciaModal");
+        if (!modal) return;
+        renderFrequencia();
+        modal.style.display = "block";
+      }
+
+      function fecharModalFrequencia() {
+        const modal = document.getElementById("frequenciaModal");
+        if (!modal) return;
+        modal.style.display = "none";
+      }
+
+      function renderFrequencia() {
+        const data = getFrequenciaResumo();
+        const total =
+          data.diasCompletos + data.faltas + data.atrasos + data.saidas;
+        const sections = [
+          { label: "Presenças", value: data.diasCompletos, color: "#22c55e" },
+          { label: "Faltas", value: data.faltas, color: "#ef4444" },
+          { label: "Atrasos", value: data.atrasos, color: "#fbbf24" },
+          { label: "Saídas", value: data.saidas, color: "#60a5fa" },
+        ];
+
+        const canvas = document.getElementById("frequenciaChart");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const radius = Math.min(canvas.width, canvas.height) / 2 - 10;
+        let startAngle = -Math.PI / 2; // começar no topo
+        sections.forEach((s) => {
+          const slice = total ? (s.value / total) * Math.PI * 2 : 0;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.arc(cx, cy, radius, startAngle, startAngle + slice);
+          ctx.closePath();
+          ctx.fillStyle = s.color;
+          ctx.fill();
+          startAngle += slice;
+        });
+
+        const legenda = document.getElementById("frequenciaLegenda");
+        legenda.innerHTML = "";
+        sections.forEach((s) => {
+          const percent = total ? Math.round((s.value / total) * 100) : 0;
+          const item = document.createElement("div");
+          item.style.display = "flex";
+          item.style.alignItems = "center";
+          item.style.gap = "8px";
+          item.style.marginBottom = "6px";
+          const swatch = document.createElement("span");
+          swatch.style.display = "inline-block";
+          swatch.style.width = "12px";
+          swatch.style.height = "12px";
+          swatch.style.borderRadius = "3px";
+          swatch.style.background = s.color;
+          const label = document.createElement("span");
+          label.textContent = `${s.label}: ${s.value} (${percent}%)`;
+          item.appendChild(swatch);
+          item.appendChild(label);
+          legenda.appendChild(item);
+        });
+      }
+
+      // --- FUNÇÕES PARA O DASHBOARD (HOME) ---
+
+      function renderHomeFrequencia() {
+        const content = document.getElementById("frequencia-resumo-content");
+        if (!content) return;
+
+        const data = getFrequenciaResumo();
+        const totalDias =
+          data.diasCompletos + data.faltas + data.atrasos + data.saidas;
+        const presencaPercent =
+          totalDias > 0
+            ? ((data.diasCompletos / totalDias) * 100).toFixed(1)
+            : 0;
+
+        content.innerHTML = `
+          <div class="frequencia-percent">
+            <span>${presencaPercent}%</span>
+            <p>de presença</p>
+          </div>
+          <div class="frequencia-detalhes">
+            <p><strong>Faltas:</strong> ${data.faltas}</p>
+            <p><strong>Atrasos:</strong> ${data.atrasos}</p>
+          </div>
+        `;
+      }
+
+      function renderProximaAula() {
+        const content = document.getElementById("proxima-aula-content");
+        if (!content) return;
+
+        const planos = lerPlanos().sort(
+          (a, b) => new Date(a.dataAula) - new Date(b.dataAula)
+        );
+        const hoje = new Date().toISOString().split("T")[0];
+
+        const proximaAula = planos.find((p) => p.dataAula >= hoje);
+
+        if (proximaAula) {
+          content.innerHTML = `
+            <p><strong>Data:</strong> ${proximaAula.dataAula}</p>
+            <p><strong>Componente:</strong> ${proximaAula.componente}</p>
+            <p><strong>Conteúdo:</strong> ${proximaAula.conteudos}</p>
+          `;
+        } else {
+          content.innerHTML = `<p>Nenhuma aula futura planejada.</p>`;
+        }
+      }
+
+      function renderAgenda() {
+        const content = document.getElementById("agenda-content");
+        if (!content) return;
+
+        const planos = lerPlanos().sort(
+          (a, b) => new Date(a.dataAula) - new Date(b.dataAula)
+        );
+        const hoje = new Date();
+        const umaSemanaDepois = new Date(hoje);
+        umaSemanaDepois.setDate(hoje.getDate() + 7);
+
+        const aulasDaSemana = planos.filter((p) => {
+          const dataAula = new Date(p.dataAula + "T00:00:00"); // Adiciona tempo para evitar problemas de fuso
+          return dataAula >= hoje && dataAula <= umaSemanaDepois;
+        });
+
+        if (aulasDaSemana.length > 0) {
+          content.innerHTML =
+            "<ul>" +
+            aulasDaSemana
+              .map(
+                (p) =>
+                  `<li><strong>${p.dataAula
+                    .split("-")
+                    .reverse()
+                    .join("/")}:</strong> ${p.componente}</li>`
+              )
+              .join("") +
+            "</ul>";
+        } else {
+          content.innerHTML = `<p>Nenhum evento para os próximos 7 dias.</p>`;
+        }
+      }
+
+      function aplicarCoresNotas() {
+        const notas = document.querySelectorAll(
+          ".boletim-table tbody td.grade"
+        );
+        notas.forEach((cel) => {
+          cel.classList.remove("grade-high", "grade-mid", "grade-low");
+          let valor = parseFloat(cel.textContent.replace(",", "."));
+          if (isNaN(valor)) return;
+
+          valor = Math.round(valor);
+          cel.innerHTML =
+            '<span class="grade-box">' + String(valor) + "</span>";
+          if (valor > 7) {
+            cel.querySelector(".grade-box").classList.add("grade-high");
+          } else if (valor >= 5) {
+            cel.querySelector(".grade-box").classList.add("grade-mid");
+          } else if (valor >= 1) {
+            cel.querySelector(".grade-box").classList.add("grade-low");
+          }
+
+          // If professor, make editable
+          if (window.userRole === "professor") {
+            cel.style.cursor = "pointer";
+            cel.addEventListener("click", () => editarNota(cel));
+          }
+        });
+      }
+
+      function editarNota(cell) {
+        const currentValue = cell.textContent.trim();
+        const newValue = prompt("Digite a nova nota (0-10):", currentValue);
+        if (newValue !== null && !isNaN(parseFloat(newValue))) {
+          const num = Math.max(0, Math.min(10, parseFloat(newValue)));
+          cell.textContent = num;
+          aplicarCoresNotas(); // reapply colors
+        }
+      }
+
+      function normalizeBoletim() {
+        const rows = document.querySelectorAll(".boletim-table tbody tr");
+        rows.forEach((tr) => {
+          const tds = Array.from(tr.querySelectorAll("td"));
+          if (tds.length === 0) return;
+          const materiaCell = tds[0];
+          const materiaNome = (materiaCell.textContent || "").trim();
+
+          for (let i = tds.length - 1; i >= 5; i--) {
+            tr.removeChild(tds[i]);
+          }
+
+          const existing = tr.querySelectorAll("td.grade").length;
+          for (let b = existing + 1; b <= 4; b++) {
+            const td = document.createElement("td");
+            td.className = "grade";
+            td.setAttribute("data-materia", materiaNome);
+            td.setAttribute("data-bim", String(b));
+            td.textContent = "7";
+            tr.appendChild(td);
+          }
+
+          const gradeCells = tr.querySelectorAll("td.grade");
+          gradeCells.forEach((cell, idx) => {
+            cell.setAttribute("data-materia", materiaNome);
+            cell.setAttribute("data-bim", String(idx + 1));
+          });
+        });
+      }
+
+      // --- LÓGICA PARA SEÇÃO DE PROVAS ---
+      function initProvasView() {
+        const professorView = document.getElementById("professor-view");
+        const alunoView = document.getElementById("aluno-view");
+        const btnProfessor = document.getElementById("switch-professor");
+        const btnAluno = document.getElementById("switch-aluno");
+
+        const notasModal = document.getElementById("notas-modal");
+        const btnOpenModal = document.getElementById("open-grades-modal");
+        const btnCloseModal = document.querySelector(".close-btn-provas");
+
+        function switchRoleView(role) {
+          professorView.classList.remove("active");
+          alunoView.classList.remove("active");
+          btnProfessor.classList.remove("active");
+          btnAluno.classList.remove("active");
+
+          if (role === "professor") {
+            professorView.classList.add("active");
+            btnProfessor.classList.add("active");
+          } else if (role === "aluno") {
+            alunoView.classList.add("active");
+            btnAluno.classList.add("active");
+          }
+        }
+
+        btnProfessor.addEventListener("click", () =>
+          switchRoleView("professor")
+        );
+        btnAluno.addEventListener("click", () => switchRoleView("aluno"));
+
+        // Define a visão padrão baseada no login
+        switchRoleView(window.userRole === "professor" ? "professor" : "aluno");
+
+        // Lógica do Modal de Notas
+        btnOpenModal.onclick = function () {
+          notasModal.style.display = "block";
+        };
+        btnCloseModal.onclick = function () {
+          notasModal.style.display = "none";
+        };
+        window.addEventListener("click", function (event) {
+          if (event.target == notasModal) {
+            notasModal.style.display = "none";
+          }
+        });
+      }
+      const STORAGE_KEY_PLANOS = "sub_plano_aulas";
+
+      function lerPlanos() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY_PLANOS);
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function salvarPlanos(planos) {
+        localStorage.setItem(STORAGE_KEY_PLANOS, JSON.stringify(planos));
+      }
+
+      function limparFormulario() {
+        document.getElementById("planoForm").reset();
+        document.getElementById("editingIndex").value = "";
+        document.getElementById("salvarPlanoBtn").textContent = "Salvar";
+        document.getElementById("cancelarEdicaoBtn").style.display = "none";
+      }
+
+      function preencherFormulario(plano) {
+        document.getElementById("dataAula").value = plano.dataAula || "";
+        document.getElementById("turma").value = plano.turma || "";
+        document.getElementById("componente").value = plano.componente || "";
+        document.getElementById("objetivos").value = plano.objetivos || "";
+        document.getElementById("conteudos").value = plano.conteudos || "";
+        document.getElementById("atividades").value = plano.atividades || "";
+        document.getElementById("recursos").value = plano.recursos || "";
+        document.getElementById("avaliacao").value = plano.avaliacao || "";
+      }
+
+      function renderPlanos() {
+        const tbody = document.getElementById("planosTbody");
+        if (!tbody) return;
+
+        const filtroTexto = (
+          document.getElementById("filtroTexto")?.value || ""
+        ).toLowerCase();
+        const filtroMes = document.getElementById("filtroMes")?.value || "";
+
+        const planos = lerPlanos();
+        const planosFiltrados = planos.filter((p) => {
+          const textoOk =
+            !filtroTexto ||
+            (p.turma || "").toLowerCase().includes(filtroTexto) ||
+            (p.componente || "").toLowerCase().includes(filtroTexto) ||
+            (p.conteudos || "").toLowerCase().includes(filtroTexto) ||
+            (p.objetivos || "").toLowerCase().includes(filtroTexto);
+          const mesOk =
+            !filtroMes || (p.dataAula || "").startsWith(filtroMes + "-");
+          return textoOk && mesOk;
+        });
+
+        tbody.innerHTML = "";
+
+        if (planosFiltrados.length === 0) {
+          const tr = document.createElement("tr");
+          const td = document.createElement("td");
+          td.colSpan = 6;
+          td.textContent = "Nenhum plano encontrado.";
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+          return;
+        }
+
+        planosFiltrados.forEach((plano, indexFiltrado) => {
+          const indexOriginal = planos.indexOf(plano);
+          const tr = document.createElement("tr");
+
+          const tdData = document.createElement("td");
+          tdData.textContent = plano.dataAula || "";
+          tr.appendChild(tdData);
+
+          const tdTurma = document.createElement("td");
+          tdTurma.textContent = plano.turma || "";
+          tr.appendChild(tdTurma);
+
+          const tdComp = document.createElement("td");
+          tdComp.textContent = plano.componente || "";
+          tr.appendChild(tdComp);
+
+          const tdObj = document.createElement("td");
+          tdObj.textContent = plano.objetivos || "";
+          tr.appendChild(tdObj);
+
+          const tdConteudos = document.createElement("td");
+          tdConteudos.textContent = plano.conteudos || "";
+          tr.appendChild(tdConteudos);
+
+          const tdAcoes = document.createElement("td");
+          if (window.userRole === "professor") {
+            const btnEditar = document.createElement("button");
+            btnEditar.textContent = "Editar";
+            btnEditar.addEventListener("click", () =>
+              editarPlano(indexOriginal)
+            );
+            const btnExcluir = document.createElement("button");
+            btnExcluir.textContent = "Excluir";
+            btnExcluir.addEventListener("click", () =>
+              excluirPlano(indexOriginal)
+            );
+            tdAcoes.appendChild(btnEditar);
+            tdAcoes.appendChild(btnExcluir);
+          } else {
+            tdAcoes.textContent = "-";
+          }
+          tr.appendChild(tdAcoes);
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      function editarPlano(index) {
+        const planos = lerPlanos();
+        const plano = planos[index];
+        if (!plano) return;
+        preencherFormulario(plano);
+        document.getElementById("editingIndex").value = String(index);
+        document.getElementById("salvarPlanoBtn").textContent = "Atualizar";
+        document.getElementById("cancelarEdicaoBtn").style.display =
+          "inline-block";
+        document.getElementById("dataAula").focus();
+      }
+
+      function excluirPlano(index) {
+        const planos = lerPlanos();
+        if (!planos[index]) return;
+        if (!confirm("Deseja realmente excluir este plano?")) return;
+        planos.splice(index, 1);
+        salvarPlanos(planos);
+        renderPlanos();
+        limparFormulario();
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("planoForm");
+        if (form) {
+          form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const novoPlano = {
+              dataAula: document.getElementById("dataAula").value,
+              turma: document.getElementById("turma").value.trim(),
+              componente: document.getElementById("componente").value.trim(),
+              objetivos: document.getElementById("objetivos").value.trim(),
+              conteudos: document.getElementById("conteudos").value.trim(),
+              atividades: document.getElementById("atividades").value.trim(),
+              recursos: document.getElementById("recursos").value.trim(),
+              avaliacao: document.getElementById("avaliacao").value.trim(),
+              atualizadoEm: new Date().toISOString(),
+            };
+
+            const planos = lerPlanos();
+            const editingIndex = document.getElementById("editingIndex").value;
+            if (editingIndex !== "") {
+              planos[Number(editingIndex)] = novoPlano;
+            } else {
+              planos.push(novoPlano);
+            }
+            salvarPlanos(planos);
+            renderPlanos();
+            limparFormulario();
+          });
+
+          document
+            .getElementById("cancelarEdicaoBtn")
+            .addEventListener("click", () => {
+              limparFormulario();
+            });
+        }
+
+        const filtroTexto = document.getElementById("filtroTexto");
+        const filtroMes = document.getElementById("filtroMes");
+        if (filtroTexto) filtroTexto.addEventListener("input", renderPlanos);
+        if (filtroMes) filtroMes.addEventListener("change", renderPlanos);
+
+        renderPlanos();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Cadastrocss.css" />
+    <link rel="icon" href="SUB/Logo.png" />
+    <title>Cadastro - SUB</title>
+</head>
+<body>
+    <header class="top-nav">
+        <div class="logo">
+            <img src="SUB/Logo.png" alt="Sub" />
+            <span>Sub</span>
+        </div>
+        <nav class="nav-links">
+            <a href="Login.html" id="login-link">Login</a>
+            <span>|</span>
+            <a href="Cadastro.html" id="cadastro-link" class="active">Cadastro</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cadastro-container">
+            <h1>Cadastro</h1>
+            <form class="cadastro-form" id="cadastroForm">
+                <label for="name">Nome:</label>
+                <div class="input-icon">
+                    <img class="icon-img" src="SUB/User.png" alt="Usuário" />
+                    <input type="text" id="name" name="name" required />
+                </div>
+                
+                <label for="email">Email:</label>
+                <div class="input-icon">
+                    <img class="icon-img" src="SUB/User.png" alt="Usuário" />
+                    <input type="email" id="email" name="email" required />
+                </div>
+                
+                <label for="password">Senha:</label>
+                <div class="input-icon">
+                    <img class="icon-img clickable" id="togglePwd" src="SUB/Olho.png" alt="Mostrar senha" />
+                    <input type="password" id="password" name="password" required />
+                </div>
+                
+                <label for="confirm-password">Confirmar Senha:</label>
+                <div class="input-icon">
+                    <img class="icon-img clickable" id="togglePwd2" src="SUB/Olho.png" alt="Mostrar senha" />
+                    <input type="password" id="confirm-password" name="confirm-password" required />
+                </div>
+                
+                <button type="submit">Cadastrar</button>
+            </form>
+            <p>Já tem uma conta? <a href="Login.html">Faça login</a></p>
+        </div>
+    </main>
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simples validação de senha igual
+            const pwd = document.getElementById('password').value;
+            const pwd2 = document.getElementById('confirm-password').value;
+            if (pwd !== pwd2) {
+                alert('As senhas não coincidem.');
+                return;
+            }
+            const email = document.getElementById('email').value;
+            localStorage.setItem('sub_authed', 'true');
+            localStorage.setItem('user_email', email);
+            window.location.href = 'SUB/SUB.html';
+        });
+
+        document.getElementById('togglePwd').addEventListener('click', () => {
+            const el = document.getElementById('password');
+            el.type = el.type === 'password' ? 'text' : 'password';
+        });
+        document.getElementById('togglePwd2').addEventListener('click', () => {
+            const el = document.getElementById('confirm-password');
+            el.type = el.type === 'password' ? 'text' : 'password';
+        });
+    </script>
+</body>
+</html>

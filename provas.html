@@ -1,0 +1,557 @@
+<!-- <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provas e Atividades</title>
+    <style>
+        /* [Seu CSS anterior permanece aqui, com a única alteração no .top-nav .nav-links a.active-link abaixo] */
+        
+        /* ... (seu CSS anterior) ... */
+        
+        .top-nav {
+            background-color: #2f4156; /* Azul Escuro */
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 20px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            position: sticky; 
+            top: 0;
+            z-index: 10;
+            height: 60px;
+        }
+
+        .top-nav .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .top-nav .nav-links {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-nav .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 0px; /* Removido o arredondamento para imitar o design */
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        /* Corrigido o estilo para refletir o design original (sem fundo, apenas sublinhado implícito) */
+        .top-nav .nav-links a:hover {
+            background-color: transparent;
+            text-decoration: underline; /* Adiciona um sublinhado ao passar o mouse */
+        }
+        
+        /* O link ATIVO (Provas) deve ter a cor da fonte do design original */
+        .top-nav .nav-links a.active-link {
+            /* No design original, o link ativo (Provas) é branco puro
+               e os outros (Boletim, Plano, Sobre) têm uma cor de destaque,
+               porém, na nav bar do seu screenshot, todos os textos de links são brancos.
+               Vamos manter o link ATIVO com um fundo sutil (azul claro) para diferenciá-lo,
+               ou apenas um texto mais destacado, como o original.
+            */
+            color: white; /* Cor do texto branco */
+            /* Opcional: Adicionar uma borda inferior para destacar */
+            /* border-bottom: 3px solid white; 
+               padding-bottom: 7px; */
+            
+            /* Para manter o estilo que você usou na versão anterior, 
+               vamos usar o azul de destaque para o fundo */
+            background-color: #1a4db7; 
+            border-radius: 8px;
+        }
+        
+        /* --- Resto do seu CSS para .provas-container, .role-switcher, etc. --- */
+        
+        .provas-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f7f6; 
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+            text-align: left;
+        }
+
+        .provas-container h2 {
+            color: #1a4db7;
+            font-weight: 800;
+            margin-top: 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #ccc;
+        }
+        
+        .provas-container h3 {
+            color: #2f4156;
+            margin-top: 25px;
+            border-left: 5px solid #1a4db7;
+            padding-left: 10px;
+        }
+
+        .role-switcher {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e0e6ec;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-size: 16px;
+        }
+
+        .role-switcher button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .role-switcher button.active {
+            background-color: #1a4db7;
+            color: white;
+            box-shadow: 0 2px 5px rgba(26, 77, 183, 0.4);
+        }
+        .role-switcher button:not(.active) {
+            background-color: #ccc;
+            color: #2f4156;
+        }
+        .role-content { display: none; }
+        .role-content.active { display: block; }
+
+
+        .question-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .question-form label {
+            display: block;
+            font-weight: bold;
+            color: #2f4156;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .question-form input[type="text"],
+        .question-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        .question-form input[type="text"]:focus,
+        .question-form textarea:focus {
+            border-color: #1a4db7;
+            outline: none;
+        }
+
+        .alternatives-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .alternative-input {
+            display: flex;
+            align-items: center;
+            background-color: #eef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .alternative-input input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            accent-color: #1a4db7;
+        }
+
+        .alternative-input input[type="text"] {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            padding: 8px;
+            background-color: white;
+        }
+
+        .alternative-label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #1a4db7;
+            min-width: 20px;
+        }
+
+        .btn-professor {
+            padding: 12px 20px;
+            background-color: #2f4156;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .btn-professor:hover {
+            background-color: #1f2a3a;
+        }
+        
+        .btn-primary {
+            background-color: #1a4db7 !important;
+        }
+        .btn-primary:hover {
+            background-color: #0d3a8b !important;
+        }
+
+
+        .aluno-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .provas-lista {
+            list-style: none;
+            padding: 0;
+        }
+
+        .prova-item {
+            background-color: #fff;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-left: 8px solid #1a4db7;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2f4156;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .prova-item:hover {
+            background-color: #f0f4f8;
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+
+        .prova-item button {
+            background-color: #1a4db7;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 10px;
+            position: relative;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-content h3 {
+            color: #1a4db7;
+            text-align: center;
+            border-bottom: 2px solid #1a4db7;
+            padding-bottom: 10px;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+        }
+
+        .grade-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #ccc;
+            font-size: 1.1em;
+            color: #2f4156;
+        }
+
+        .grade-item:last-child {
+            border-bottom: none;
+        }
+
+        .grade-value {
+            font-weight: bold;
+            color: #1a4db7;
+            font-size: 1.2em;
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="top-nav">
+    <div class="logo">
+        <span style="font-size: 24px; color: #fff;">SUB</span> 
+    </div>
+    <div class="nav-links">
+        <a href="boletim.html">Boletim</a> 
+        
+        <a href="plano.html">Plano</a>
+        
+        <a href="provas.html" class="active-link">Provas</a> 
+        
+        <a href="sobre.html">Sobre</a>
+    </div>
+</header>
+<main class="provas-container">
+    
+    <div class="role-switcher">
+        <span>Visualizando como:</span>
+        <button id="switch-professor">Professor 🧑‍🏫</button>
+        <button id="switch-aluno">Aluno 🎒</button>
+    </div>
+    
+    <div id="professor-view" class="role-content">
+        <h2>Painel do Professor</h2>
+        <h3>Criar Nova Prova ou Atividade</h3>
+        <form class="question-form">
+            
+            <div class="form-group">
+                <label for="componente">Componente Curricular</label>
+                <input type="text" id="componente" placeholder="Ex: Matemática" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="titulo-prova">Título da Prova/Atividade</label>
+                <input type="text" id="titulo-prova" placeholder="Ex: Avaliação de Funções - 1º Bimestre" required>
+            </div>
+            
+            <hr style="border: 1px dashed #ccc; margin: 30px 0;">
+            
+            <h3>Adicionar Nova Questão (Exemplo de Múltipla Escolha)</h3>
+            
+            <div class="form-group">
+                <label for="pergunta">Pergunta da Questão</label>
+                <textarea id="pergunta" rows="3" placeholder="Digite aqui o texto da questão. Qual é o valor de x na equação 2x + 5 = 15?" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Alternativas e Resposta Correta (Selecione o Rádio)</label>
+                <div class="alternatives-grid">
+                    
+                    <div class="alternative-input">
+                        <input type="radio" name="resposta-correta" id="correta-a" value="a" required>
+                        <span class="alternative-label">A)</span>
+                        <input type="text" placeholder="Alternativa A: x = 5" required>
+                    </div>
+
+                    <div class="alternative-input">
+                        <input type="radio" name="resposta-correta" id="correta-b" value="b">
+                        <span class="alternative-label">B)</span>
+                        <input type="text" placeholder="Alternativa B: x = 10" required>
+                    </div>
+
+                    <div class="alternative-input">
+                        <input type="radio" name="resposta-correta" id="correta-c" value="c">
+                        <span class="alternative-label">C)</span>
+                        <input type="text" placeholder="Alternativa C: x = 7.5" required>
+                    </div>
+
+                    <div class="alternative-input">
+                        <input type="radio" name="resposta-correta" id="correta-d" value="d">
+                        <span class="alternative-label">D)</span>
+                        <input type="text" placeholder="Alternativa D: x = 20" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-professor">Salvar Questão e Adicionar Rascunho</button>
+            <button type="submit" class="btn-professor btn-primary">Finalizar e Publicar Prova</button>
+
+        </form>
+    </div>
+    
+    <div id="aluno-view" class="role-content">
+        <div class="aluno-header">
+            <h2>Provas e Atividades Pendentes</h2>
+            <button id="open-grades-modal" class="btn-professor btn-primary">
+                Notas Anteriores 📝
+            </button>
+        </div>
+        
+        <p style="margin-bottom: 20px; font-size: 1.1em; color: #555;">
+            Clique em "Iniciar Prova" para começar uma avaliação.
+        </p>
+        
+        <ul class="provas-lista">
+            <li class="prova-item">
+                <span>**Matemática:** Prova do 3º Bimestre</span>
+                <button>Iniciar Prova</button>
+            </li>
+            <li class="prova-item">
+                <span>**Português:** Análise de Texto - Machado de Assis</span>
+                <button>Iniciar Prova</button>
+            </li>
+            <li class="prova-item">
+                <span>**História:** Questionário sobre a Revolução Industrial</span>
+                <button>Iniciar Prova</button>
+            </li>
+             <li class="prova-item">
+                <span>**Ciências:** Avaliação de Ecossistemas - 4º Bimestre</span>
+                <button>Iniciar Prova</button>
+            </li>
+        </ul>
+    </div>
+    
+    <div id="notas-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Notas Finais de Provas e Atividades</h3>
+            <p style="text-align: center; color: #777;">
+                Desempenho nas últimas 4 avaliações realizadas.
+            </p>
+            
+            <div style="margin-top: 20px;">
+                <div class="grade-item">
+                    <span>Prova de Biologia - 3º Bimestre</span>
+                    <span class="grade-value">8.5</span>
+                </div>
+                <div class="grade-item">
+                    <span>Avaliação Mensal de Matemática</span>
+                    <span class="grade-value">9.2</span>
+                </div>
+                <div class="grade-item">
+                    <span>Trabalho de História</span>
+                    <span class="grade-value">6.0</span>
+                </div>
+                <div class="grade-item">
+                    <span>Simulado ENEM - Parte I</span>
+                    <span class="grade-value">7.8</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+</main>
+
+<script>
+    // --- LÓGICA JAVASCRIPT PARA SIMULAR OS PERFIS E O MODAL (MANTIDA) ---
+    
+    const professorView = document.getElementById('professor-view');
+    const alunoView = document.getElementById('aluno-view');
+    const btnProfessor = document.getElementById('switch-professor');
+    const btnAluno = document.getElementById('switch-aluno');
+    
+    const notasModal = document.getElementById('notas-modal');
+    const btnOpenModal = document.getElementById('open-grades-modal');
+    const btnCloseModal = document.querySelector('.close-btn');
+
+    /**
+     * Alterna a visualização entre Professor e Aluno.
+     */
+    function switchRoleView(role) {
+        // Remove a classe 'active' de todos os conteúdos e botões
+        professorView.classList.remove('active');
+        alunoView.classList.remove('active');
+        btnProfessor.classList.remove('active');
+        btnAluno.classList.remove('active');
+
+        if (role === 'professor') {
+            professorView.classList.add('active');
+            btnProfessor.classList.add('active');
+        } else if (role === 'aluno') {
+            alunoView.classList.add('active');
+            btnAluno.classList.add('active');
+        }
+    }
+
+    // Event Listeners para alternar o perfil
+    btnProfessor.addEventListener('click', () => switchRoleView('professor'));
+    btnAluno.addEventListener('click', () => switchRoleView('aluno'));
+    
+    // Inicia a tela no modo Aluno por padrão
+    switchRoleView('aluno');
+    
+    // --- Lógica do Modal de Notas ---
+    
+    // Abrir o Modal
+    btnOpenModal.onclick = function() {
+        notasModal.style.display = 'block';
+    }
+    
+    // Fechar o Modal pelo botão 'x'
+    btnCloseModal.onclick = function() {
+        notasModal.style.display = 'none';
+    }
+    
+    // Fechar o Modal clicando fora dele
+    window.onclick = function(event) {
+        if (event.target == notasModal) {
+            notasModal.style.display = 'none';
+        }
+    }
+    
+</script>
+
+</body>
+</html> -->
